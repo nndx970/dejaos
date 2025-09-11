@@ -12,8 +12,7 @@ case "$1" in
       exit 1
     fi
 
-    # 自动获取ip（每秒尝试一次，最多10次，总共10秒）
-    udhcpc -f -i eth0 -t 10 -T 1 &
+    udhcpc -q -i eth0 &
 
     mkdir /app
     mkdir -p /os/welcome
@@ -37,8 +36,6 @@ case "$1" in
       fi
     fi
 
-    mkfifo /tmp/program_pipe
-
     lvgljs run /os/welcome/index.js & 
 
     # 启动异步监控进程
@@ -56,6 +53,7 @@ case "$1" in
             mode_content=$(cat /os/.mode | tr -d '\n\r' | tr -d ' ')
             if [ "$mode_content" = "development" ]; then
               echo "启动开发模式"
+              mkfifo /tmp/program_pipe
               /os/webserver/webserver < /tmp/program_pipe &
               lvgljs run /app/index.js > /tmp/program_pipe &
               break

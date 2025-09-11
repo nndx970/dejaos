@@ -1,6 +1,7 @@
 import { Button, Render, Text, View } from "lvgljs-ui";
 import React from "react";
 import "./test/gpio.js"
+import "./test/net.js"
 
 function App() {
   return (
