@@ -1,0 +1,9 @@
+{
+    "mqtt": {
+        "clientId": "1234567890",
+        "addr": "mqtt://47.122.17.4:61713",
+        "username": "admin",
+        "password": "password",
+        "willTopic": "access_device/v2/event/offline"
+    }
+}

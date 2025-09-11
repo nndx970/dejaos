@@ -1,0 +1,87 @@
+#!/bin/sh
+#
+# Start app....
+#
+
+case "$1" in
+  start)
+    if [ -f "/usr/bin/vglicense" ]; then
+      /usr/bin/vglicense
+    else
+      echo "/usr/bin/vglicense 不存在"
+      exit 1
+    fi
+
+    # 自动获取ip（每秒尝试一次，最多10次，总共10秒）
+    udhcpc -f -i eth0 -t 10 -T 1 &
+
+    mkdir /app
+    mkdir -p /os/welcome
+    mkdir -p /os/webserver/src
+
+    export LD_LIBRARY_PATH=/os/driver:$LD_LIBRARY_PATH
+
+    # 检查/data/upgrade目录是否存在
+    if [ -d "/data/upgrade" ]; then
+      if [ -f "/data/upgrade/app.zip" ]; then
+        echo "检测到升级包 /data/upgrade/app.zip，开始升级..."
+        echo "删除 /app 目录下所有内容..."
+        rm -rf /app/*
+        unzip -o /data/upgrade/app.zip -d /app
+        if [ $? -eq 0 ]; then
+          echo "升级完成，删除升级包"
+          rm -f /data/upgrade/app.zip
+        else
+          echo "升级失败"
+        fi
+      fi
+    fi
+
+    mkfifo /tmp/program_pipe
+
+    lvgljs run /os/welcome/index.js & 
+
+    # 启动异步监控进程
+    monitor_lvgljs() {
+      local check_interval=1
+      
+      while true; do
+        if pgrep -f "lvgljs.*welcome/index.js" > /dev/null; then
+          echo "欢迎页面运行中"
+        else
+          echo "欢迎页面已退出"
+
+          # 检查/os/.mode文件内容
+          if [ -f "/os/.mode" ]; then
+            mode_content=$(cat /os/.mode | tr -d '\n\r' | tr -d ' ')
+            if [ "$mode_content" = "development" ]; then
+              echo "启动开发模式"
+              /os/webserver/webserver < /tmp/program_pipe &
+              lvgljs run /app/index.js > /tmp/program_pipe &
+              break
+            else
+              echo "启动生产模式"
+            fi
+          else
+            echo "启动生产模式"
+          fi
+          lvgljs run /app/index.js &
+          break
+        fi
+        sleep $check_interval
+      done
+    }
+    
+    # 在后台运行监控函数
+    monitor_lvgljs &
+	;;
+  stop)
+	;;
+  restart|reload)
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?

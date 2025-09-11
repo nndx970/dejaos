@@ -1,0 +1,10 @@
+{
+  "name": "lvgljs-ui",
+  "version": "0.0.1",
+  "description": "lvgljs react frame",
+  "main": "index.ts",
+  "scripts": {},
+  "dependencies": {
+    "react-reconciler": "^0.25.1"
+  }
+}

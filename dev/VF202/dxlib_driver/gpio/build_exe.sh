@@ -1,0 +1,1 @@
+/home/dxl/.toolchains/arm-gcc550/arm-gcc550-glibc221-sv80x/bin/arm-linux-gnueabihf-g++ -Wall -Wextra -O3 -o /media/sf_share/new/dev/VF202/dxlib_driver/gpio/gpio_exe /media/sf_share/new/dev/VF202/dxlib_driver/gpio/gpio_wrapper.c -lvbar-drv-gpio -I/media/sf_share/new/dev/VF202/driver/include -L/media/sf_share/new/dev/VF202/os/driver

@@ -1,0 +1,14 @@
+{
+  "name": "dxaccess",
+  "version": "0.0.1",
+  "description": "标准门禁系统",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "build": "npm i && npx esbuild index.js --bundle --platform=neutral --external:tjs:path --external:tjs:ffi --define:process.env.NODE_ENV='\"production\"' --outfile=dist/index.js"
+  },
+  "author": "dxl",
+  "dependencies": {
+    "dxlib": "file:../dxlib"
+  }
+}
