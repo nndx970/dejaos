@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "build": "npm i && npx esbuild index.js --bundle --platform=neutral --external:tjs:path --external:tjs:sqlite --external:tjs:ffi --define:process.env.NODE_ENV='\"production\"' --outfile=dist/index.js && cp -r resource dist/resource"
+    "build": "npm i && npx esbuild index.js --bundle --platform=neutral --external:tjs:path --external:tjs:sqlite --external:tjs:ffi --define:process.env.NODE_ENV='\"production\"' --outfile=dist/index.js && rm -rf dist/resource && cp -r resource dist/resource"
   },
   "author": "dxl",
   "dependencies": {

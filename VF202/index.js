@@ -1,4 +1,5 @@
-import { capturer, face, pwm, mqtt, display, common } from "dxDriver";
+import path from "tjs:path";
+import { capturer, face, pwm, mqtt, display, common, audio } from "dxDriver";
 import { config, mqttAccess } from "dxAccess";
 import configJson from './config.json';
 import { uiInit } from './src/ui/index.js';
@@ -16,8 +17,9 @@ async function main() {
     // 初始化人脸识别
     faceInit1(rgbCapturer, nirCapturer, configManager);
     // 初始化PWM
-    pwm.setIrLedBrightness(0);
-    pwm.setWhiteLedBrightness(255);
+    pwmInit();
+    // 初始化音频
+    audioInit1();
     // 初始化MQTT
     mqttInit1(configManager);
     // 初始化UI
@@ -52,4 +54,16 @@ function displayInit() {
     display.setEnableStatus(1);
     display.setBacklight(100);
     display.setPowerMode(0);
+}
+
+function pwmInit() {
+    pwm.setIrLedBrightness(255);
+    pwm.setWhiteLedBrightness(255);
+}
+
+function audioInit1() {
+    audio.audioInit(100);
+    let resourcePath = path.join(import.meta.dirname, '/resource');
+    audio.audioPlay(resourcePath + '/audio/welcome.wav');
+    audio.audioGetVolumeRange();
 }

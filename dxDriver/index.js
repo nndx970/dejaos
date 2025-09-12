@@ -13,6 +13,7 @@ import { faceInit, faceUpdateConfig, getFaceRecognitionResult, getFaceTrackData,
 import { mqttInit, mqttDeinit, setConnectedCallback, setStatusCallback, setMessageCallback, subscribe, publish } from './lib/mqtt/index.js';
 import { pwmRequest, pwmSetPeriodByChannel, pwmEnable, pwmSetDutyByChannel, pwmFree, setIrLedBrightness, setWhiteLedBrightness } from './lib/pwm/index.js';
 import { initGpio, deinitGpio, requestGpio, freeGpio, setFuncGpio, setPullStateGpio, getPullStateGpio, setValueGpio, getValueGpio, setDriveStrengthGpio, getDriveStrengthGpio, setRelayStatus } from './lib/gpio/index.js';
+import { audioInit, audioDeinit, audioPlay, audioPlayingInterrupt, audioGetVolume, audioSetVolume, audioGetVolumeRange } from './lib/audio/index.js';
 
 
 // 摄像头模块
@@ -84,4 +85,15 @@ export const gpio = {
     setDriveStrengthGpio,
     getDriveStrengthGpio,
     setRelayStatus
+};
+
+// 音频模块
+export const audio = {
+    audioInit,
+    audioDeinit,
+    audioPlay,
+    audioPlayingInterrupt,
+    audioGetVolume,
+    audioSetVolume,
+    audioGetVolumeRange
 };
