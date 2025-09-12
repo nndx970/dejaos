@@ -1,4 +1,4 @@
-import { face } from 'dxlib';
+import { face } from 'dxDriver';
 
 export const onConfigKeyChangeService = async (onConfigChange, onConfigKeyChange) => {
     // onConfigChange(async (key, oldValue, newValue, configManager) => {

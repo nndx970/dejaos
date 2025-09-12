@@ -1,5 +1,5 @@
 {
-  "name": "dxaccess",
+  "name": "dxAccess",
   "version": "0.0.1",
   "description": "标准门禁系统",
   "main": "index.js",
@@ -9,6 +9,6 @@
   },
   "author": "dxl",
   "dependencies": {
-    "dxlib": "file:../dxlib"
+    "dxDriver": "file:../dxDriver"
   }
 }

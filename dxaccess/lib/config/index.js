@@ -1,4 +1,4 @@
-import { common } from 'dxlib';
+import { common } from 'dxDriver';
 import { onConfigKeyChangeService } from './service.js';
 import { saveToFile as systemSaveToFile } from '../utils/index.js';
 

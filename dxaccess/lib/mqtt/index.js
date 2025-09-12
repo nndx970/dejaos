@@ -1,7 +1,7 @@
 import db from '../access/AccessControlDB.js';
 import { initConfigManager, getAll } from '../config/index.js';
 import { downloadFile } from '../utils/index.js';
-import { mqtt, common } from 'dxlib';
+import { mqtt, common } from 'dxDriver';
 
 const { subscribe, publish, setConnectedCallback, setMessageCallback } = mqtt;
 const { md5HashFile } = common;

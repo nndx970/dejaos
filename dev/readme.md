@@ -3,4 +3,10 @@
 /os/driver/*.so驱动库
 /os/welcome/index.js启动界面
 /os/webserver/webserver内部服务
-/os/webserver/src/index.html服务页面
+/os/webserver/src/index.html内部服务页面
+/data/db/face.db人脸组件专用库
+/data/db/access.db标准门禁库
+/data/upgrade/app.zip固件升级应用程序
+/data/config/config.json设备配置文件
+/data/user/register/picture/*.jpg用户人脸注册图片
+/data/user/register/picture/*.txt用户人脸注册图片的人脸坐标信息

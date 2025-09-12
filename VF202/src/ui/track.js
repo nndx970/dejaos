@@ -1,9 +1,9 @@
 import path from "tjs:path";
 import { EAlignType, EVENTTYPE_MAP, View, Textarea, Text, Button, Image, Dropdownlist, Keyboard, Window } from "./const.js";
-import { face } from "dxlib";
+import { face } from "dxDriver";
 const { getFaceRecognitionResult, getFaceTrackData } = face;
 import { hide, show } from "./utils.js";
-import { access, config } from "dxaccess";
+import { access, config } from "dxAccess";
 import { accessAccess, accessFail } from "./result.js";
 
 // 跟踪框白色

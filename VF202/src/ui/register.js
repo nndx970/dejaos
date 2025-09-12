@@ -3,9 +3,9 @@ import { EAlignType, Image, Text } from "./const.js";
 import { setRegisterNow } from "./track.js";
 import { getText } from "./password.js";
 import { hide, show } from "./utils.js";
-import { face } from "dxlib";
+import { face } from "dxDriver";
 import { accessAccess, accessFail } from "./result.js";
-import { access } from "dxaccess";
+import { access } from "dxAccess";
 
 
 let bar
@@ -62,25 +62,26 @@ export function confirmRegister() {
             hide(tipText);
             hide(tipIcon);
             hide(bar);
-            let ret = face.faceRegister(userName);
-            // 注册成功后，创建用户和凭证
-            const userId = access.db.createUser(userName);
-            console.log("用户创建成功，ID:", userId);
-            const credentialId = access.db.createCredential(userId, 300, "");
-            console.log("人脸凭证创建成功，ID:", credentialId);
-            if (!userId || !credentialId) {
-                ret = -99;
-            }
-            if (ret == 0) {
-                accessAccess(300, "*****人脸注册成功*****")
-            } else {
-                accessFail(300, "人脸注册失败，错误码：" + ret)
-            }
-            setTimeout(() => {
-                setRegisterNow(false);
-            }, 2000);
-            clearInterval(countInterval);
-            return;
+
+            face.faceRegister(userName).then((ret) => {
+                // 注册成功后，创建用户和凭证
+                const userId = access.db.createUser(userName);
+                console.log("用户创建成功，ID:", userId);
+                const credentialId = access.db.createCredential(userId, 300, "");
+                console.log("人脸凭证创建成功，ID:", credentialId);
+                if (!userId || !credentialId) {
+                    ret = -99;
+                }
+                if (ret == 0) {
+                    accessAccess(300, "*****人脸注册成功*****")
+                } else {
+                    accessFail(300, "人脸注册失败，错误码：" + ret)
+                }
+                setTimeout(() => {
+                    setRegisterNow(false);
+                }, 2000);
+                clearInterval(countInterval);
+            });
         }
     }, 1000);
 }

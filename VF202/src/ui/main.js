@@ -1,7 +1,7 @@
 import path from "tjs:path";
 import { EAlignType, EVENTTYPE_MAP, View, Textarea, Text, Button, Image, Dropdownlist, Keyboard, Window, ETextOverflow } from "./const.js";
 import { hide, show } from "./utils.js";
-import { mqtt, common, face } from "dxlib";
+import { mqtt, common, face } from "dxDriver";
 import { showPasswordPass, hidePasswordPass, confirmPassword } from "./password.js";
 import { confirmRegister } from "./register.js";
 

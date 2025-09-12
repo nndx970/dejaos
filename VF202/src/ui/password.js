@@ -1,8 +1,8 @@
 import { Window, View, Textarea, EAlignType, Keyboard } from "./const.js";
 import { hide, show } from "./utils.js";
 import { EVENTTYPE_MAP } from "./const.js";
-import { face } from "dxlib";
-import { access } from "dxaccess";
+import { face } from "dxDriver";
+import { access } from "dxAccess";
 import { accessAccess, accessFail } from "./result.js";
 import path from "tjs:path";
 import { setPasswordNow } from "./track.js";

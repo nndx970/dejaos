@@ -9,7 +9,8 @@
   },
   "author": "dxl",
   "dependencies": {
-    "dxlib": "file:../dxlib",
-    "dxaccess": "file:../dxaccess"
+    "dxDriver": "file:../dxDriver",
+    "dxAccess": "file:../dxAccess",
+    "dxLib": "file:../dxLib"
   }
 }

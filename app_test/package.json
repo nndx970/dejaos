@@ -9,8 +9,9 @@
   },
   "author": "dxl",
   "dependencies": {
-    "dxaccess": "file:../dxaccess",
-    "dxlib": "file:../dxlib",
+    "dxAccess": "file:../dxAccess",
+    "dxDriver": "file:../dxDriver",
+    "dxLib": "file:../dxLib",
     "lvgljs-ui": "file:../lvgljs-ui",
     "react": "^16.13.1",
     "react-reconciler": "^0.25.1"

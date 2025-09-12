@@ -1,0 +1,3 @@
+/home/dxl/.toolchains/arm-gcc550/arm-gcc550-glibc221-sv80x/bin/arm-linux-gnueabihf-gcc -Wall -Wextra -fPIC -shared -O3 /media/sf_share/new/dev/VF202/dxDriver_c/mqtt/mqtt_wrapper.c -o /media/sf_share/new/dev/VF202/dxDriver_c/mqtt/libmqtt_wrapper.so -lpaho-mqtt3as -lpthread -lssl -lcrypto -I/media/sf_share/new/dev/VF202/driver/include -L/media/sf_share/new/dev/VF202/os/driver -I/media/sf_share/new/dev/VF202/driver/thirdlib/paho_mqtt_c-1.3.12/include -L/media/sf_share/new/dev/VF202/driver/thirdlib/paho_mqtt_c-1.3.12/lib
+
+cp /media/sf_share/new/dev/VF202/dxDriver_c/mqtt/libmqtt_wrapper.so /media/sf_share/new/dev/VF202/os/driver

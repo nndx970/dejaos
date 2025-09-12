@@ -1,7 +1,12 @@
-import { capturer, face, pwm, mqtt, display, common } from "dxlib";
-import { config, mqttAccess } from "dxaccess";
+import { capturer, face, pwm, mqtt, display, common } from "dxDriver";
+import { config, mqttAccess } from "dxAccess";
 import configJson from './config.json';
 import { uiInit } from './src/ui/index.js';
+
+// 内存检测
+setInterval(() => {
+    tjs.spawn(['free', '-m'])
+}, 1000);
 
 async function main() {
     // 初始化配置管理器
@@ -11,18 +16,14 @@ async function main() {
     // 初始化人脸识别
     faceInit1(rgbCapturer, nirCapturer, configManager);
     // 初始化PWM
-    pwm.pwmInit();
+    pwm.setIrLedBrightness(0);
+    pwm.setWhiteLedBrightness(255);
     // 初始化MQTT
     mqttInit1(configManager);
     // 初始化UI
     uiInit();
     // 初始化显示
     displayInit();
-
-    // 内存检测
-    setInterval(() => {
-        tjs.spawn(['free', '-m'])
-    }, 2000);
 }
 
 main().catch(console.error);

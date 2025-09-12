@@ -1,10 +1,11 @@
 {
-  "name": "dxlib",
+  "name": "dxLib",
   "version": "0.0.1",
-  "description": "设备驱动库",
+  "description": "标准库",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "build": "npm i && npx esbuild index.js --bundle --platform=neutral --external:tjs:path --external:tjs:ffi --define:process.env.NODE_ENV='\"production\"' --outfile=dist/index.js"
   },
   "author": "dxl"
 }

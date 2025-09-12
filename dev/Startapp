@@ -12,7 +12,8 @@ case "$1" in
       exit 1
     fi
 
-    udhcpc -q -i eth0 &
+    # 自动获取ip(每秒尝试一次，最多10次，总共10秒)
+    udhcpc -f -i eth0 -t 10 -T 1 &
 
     mkdir /app
     mkdir -p /os/welcome

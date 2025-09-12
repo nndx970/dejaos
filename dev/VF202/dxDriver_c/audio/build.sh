@@ -1,0 +1,3 @@
+/home/dxl/.toolchains/arm-gcc550/arm-gcc550-glibc221-sv80x/bin/arm-linux-gnueabihf-gcc -Wall -Wextra -fPIC -shared -O3 -o /media/sf_share/new/dev/VF202/dxDriver_c/audio/libaudio_wrapper.so /media/sf_share/new/dev/VF202/dxDriver_c/audio/audio_wrapper.c -I/media/sf_share/new/dev/VF202/driver/include -L/media/sf_share/new/dev/VF202/os/driver
+
+cp /media/sf_share/new/dev/VF202/dxDriver_c/audio/libaudio_wrapper.so /media/sf_share/new/dev/VF202/os/driver

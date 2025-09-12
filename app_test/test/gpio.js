@@ -1,5 +1,6 @@
-import { gpio } from "dxlib";
+import { gpio } from "dxDriver";
 
+// 只会执行一次init
 gpio.initGpio();
 gpio.initGpio();
 gpio.initGpio();
