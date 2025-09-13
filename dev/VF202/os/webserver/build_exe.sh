@@ -1,1 +1,0 @@
-/home/dxl/.toolchains/arm-gcc550/arm-gcc550-glibc221-sv80x/bin/arm-linux-gnueabihf-gcc -Wall -Wextra -O3 -o /media/sf_share/new/dev/VF202/os/webserver/webserver /media/sf_share/new/dev/VF202/os/webserver/webserver.c /media/sf_share/new/dev/VF202/os/webserver/mongoose.c -pthread

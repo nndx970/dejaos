@@ -1,3 +1,0 @@
-/home/dxl/.toolchains/arm-gcc550/arm-gcc550-glibc221-sv80x/bin/arm-linux-gnueabihf-gcc -Wall -Wextra -fPIC -shared -O3 -o /media/sf_share/new/dev/VF202/dxDriver_c/common/libcommon_wrapper.so /media/sf_share/new/dev/VF202/dxDriver_c/common/common_wrapper.c -lvbar-m-common -I/media/sf_share/new/dev/VF202/driver/include -L/media/sf_share/new/dev/VF202/os/driver
-
-cp /media/sf_share/new/dev/VF202/dxDriver_c/common/libcommon_wrapper.so /media/sf_share/new/dev/VF202/os/driver
