@@ -1,3 +1,3 @@
-/home/dxl/.toolchains/arm-gcc550/arm-gcc550-glibc221-sv80x/bin/arm-linux-gnueabihf-gcc -Wall -Wextra -fPIC -shared -O3 -o /media/sf_share/new/dev/VF202/dxDriver_c/face/libface_wrapper.so /media/sf_share/new/dev/VF202/dxDriver_c/face/face_wrapper.c -lvbar-drv-face -lvbar-m-capturer -I/media/sf_share/new/dev/VF202/driver/include -L/media/sf_share/new/dev/VF202/os/driver
+/home/dxl/.toolchains/arm-gcc550/arm-gcc550-glibc221-sv80x/bin/arm-linux-gnueabihf-gcc -Wall -Wextra -fPIC -shared -O3 -o /home/dxl/dxInside/dejaos/dev/VF202/dxDriver_c/face/libface_wrapper.so /home/dxl/dxInside/dejaos/dev/VF202/dxDriver_c/face/face_wrapper.c -lvbar-drv-face -lvbar-m-capturer -I/home/dxl/dxInside/dejaos/dev/VF202/driver/include -L/home/dxl/dxInside/dejaos/dev/VF202/os/driver
 
-cp /media/sf_share/new/dev/VF202/dxDriver_c/face/libface_wrapper.so /media/sf_share/new/dev/VF202/os/driver
+cp /home/dxl/dxInside/dejaos/dev/VF202/dxDriver_c/face/libface_wrapper.so /home/dxl/dxInside/dejaos/dev/VF202/os/driver

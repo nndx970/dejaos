@@ -1,7 +1,7 @@
 import path from "tjs:path";
 import { EAlignType, EVENTTYPE_MAP, View, Textarea, Text, Button, Image, Dropdownlist, Keyboard, Window } from "./const.js";
 import { face } from "dxDriver";
-const { getFaceRecognitionResult, getFaceTrackData } = face;
+const { getFaceRecognitionResult, getFaceTrackData, faceGetSavedPicturePath } = face;
 import { hide, show } from "./utils.js";
 import { access, config } from "dxAccess";
 import { accessAccess, accessFail } from "./result.js";
@@ -44,8 +44,7 @@ setInterval(async () => {
         // console.log(trackData);
         drawTrackBox(trackData.x1, trackData.y1, trackData.x2, trackData.y2);
     }
-    let recognitionData = getFaceRecognitionResult();
-    if (recognitionData) {
+    getFaceRecognitionResult((recognitionData) => {
         // console.log(recognitionData);
         if (registerNow || passwordNow) {
             return;
@@ -60,7 +59,7 @@ setInterval(async () => {
         }
 
         let success = null;
-
+        let save_image = false;
         if (configManager.get('face.livenessOff') === 1) {
             if (!recognitionData.is_living) {
                 success = false
@@ -82,18 +81,25 @@ setInterval(async () => {
                 trackBoxNow = trackGreenImg;
             }
             accessAccess(300);
+            save_image = true;
         } else {
             if (trackBoxNow !== trackRedImg) {
                 hide(trackBoxNow);
                 trackBoxNow = trackRedImg;
             }
             accessFail(300);
+            save_image = true;
         }
+        // setTimeout(() => {
+            let savedPicturePath = faceGetSavedPicturePath();
+            console.log(savedPicturePath);
+        // }, 2000);
 
         statusNowTimer = setTimeout(() => {
             statusNow = null;
         }, 5000);
-    }
+        return save_image;
+    });
 }, 5);
 
 

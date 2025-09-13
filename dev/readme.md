@@ -8,5 +8,7 @@
 /data/db/access.db标准门禁库
 /data/upgrade/app.zip固件升级应用程序
 /data/config/config.json设备配置文件
-/data/user/register/picture/*.jpg用户人脸注册图片
-/data/user/register/picture/*.txt用户人脸注册图片的人脸坐标信息
+/data/user/register/picture/*.jpeg用户人脸注册全景图片
+/data/user/register/picture/*_thumb.jpeg用户人脸注册的脸部图片
+/data/user/access/picture/*_{timestamp}.jpeg用户人脸通行全景图片
+/data/user/access/picture/*_{timestamp}_thumb.jpeg用户人脸通行的脸部图片

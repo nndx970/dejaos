@@ -61,7 +61,7 @@ function pwmInit() {
 }
 
 function audioInit1() {
-    audio.audioInit(100);
-    let resourcePath = path.join(import.meta.dirname, '/resource');
-    audio.audioPlay(resourcePath + '/audio/welcome.wav');
+    // audio.audioInit(100);
+    // let resourcePath = path.join(import.meta.dirname, '/resource');
+    // audio.audioPlay(resourcePath + '/audio/welcome.wav');
 }

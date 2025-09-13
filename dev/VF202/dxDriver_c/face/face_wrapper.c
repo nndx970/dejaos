@@ -16,9 +16,10 @@ static struct vbar_m_capturer_handle *nirCapturer = NULL;
 static struct vbar_m_capturer_handle *rgbCapturer = NULL;
 
 static int register_flag = 0;
-static char pending_userid[256] = {0};
-static char pending_picture_path[256] = {0};
+static char register_userid[256] = {0};
 static int register_result = -99;
+static char saved_picture_path[256] = {0};
+static char saved_picture_thumb_path[256] = {0};
 
 struct track_t
 {
@@ -33,6 +34,8 @@ static struct track_t g_last_track = {0};
 
 static char g_userid[256] = {0};
 
+static int g_recognition_success = -1;
+
 struct recognition_t
 {
     float score;
@@ -46,10 +49,6 @@ struct face_config_t
 {
     int living_check_enable;
 };
-
-// static char g_recognition_result[256] = {0};
-
-// static int last_id = -1;
 
 static struct vbar_drv_image *nir_capturer_image_read()
 {
@@ -200,6 +199,7 @@ int face_detection(struct vbar_drv_face_analysis_result *analysis_result, void *
 
     return 0;
 }
+void __save_image(char *dir, char *userid, struct vbar_drv_face_recongition_info *recognition);
 
 int face_recognition(struct vbar_drv_face_analysis_result *analysis_result, void *pdata)
 {
@@ -216,39 +216,93 @@ int face_recognition(struct vbar_drv_face_analysis_result *analysis_result, void
     g_recognition.score = result.score;
     g_recognition.is_living = face_info.recognition.is_living_check_success;
     g_recognition.living_score = face_info.recognition.score_living;
-
     if (register_flag)
     {
-        int ret = vbar_drv_face_features_register(pending_userid, face_info.recognition.feature);
+        int ret = vbar_drv_face_features_register(register_userid, face_info.recognition.feature);
         // 保存注册结果
         register_result = ret;
         register_flag = 0; // 清除注册标志
         if (ret == 0)
         {
-            // 递归创建多级目录
-            system("mkdir -p /data/user/register/picture");
-            snprintf(pending_picture_path, sizeof(pending_picture_path), "/data/user/register/picture/%s.png", pending_userid);
-            vbar_drv_image_process_image_to_picture_file(face_info.recognition.rgb_image, IMAGE_YUV420SP, TYPE_PNG, pending_picture_path, 100);
-
-            // 保存坐标信息到JSON文件
-            char json_path[256];
-            snprintf(json_path, sizeof(json_path), "/data/user/register/picture/%s.json", pending_userid);
-
-            // FILE *json_file = fopen(json_path, "w");
-            // if (json_file != NULL)
-            // {
-            //     fprintf(json_file, "{\n");
-            //     fprintf(json_file, "    \"x1\": %d,\n", face_info.rgb_detection.rect_smooth[0]);
-            //     fprintf(json_file, "    \"y1\": %d,\n", face_info.rgb_detection.rect_smooth[1]);
-            //     fprintf(json_file, "    \"x2\": %d,\n", face_info.rgb_detection.rect_smooth[2]);
-            //     fprintf(json_file, "    \"y2\": %d\n", face_info.rgb_detection.rect_smooth[3]);
-            //     fprintf(json_file, "}\n");
-            //     fclose(json_file);
-            // }
+            __save_image("/data/user/register/picture", register_userid, &face_info.recognition);
         }
+    }else{
+        // 使用更高效的等待机制，避免CPU占用过高
+        int wait_count = 0;
+        const int max_wait_count = 50; // 最多等待5秒 (50 * 100ms)
+        
+        while (g_recognition_success == -1 && wait_count < max_wait_count)
+        {
+            usleep(100000); // 100毫秒
+            wait_count++;
+        }
+        
+        // 如果超时仍未获得结果，跳过保存
+        if (wait_count >= max_wait_count) {
+            printf("警告：等待识别结果超时，跳过图片保存\n");
+            g_recognition_success = -1;
+            return 0;
+        }
+        if (g_recognition_success == 1)
+        {
+            // 生成带时间戳的用户名
+            char userid_with_timestamp[512];
+            time_t current_time = time(NULL);
+            snprintf(userid_with_timestamp, sizeof(userid_with_timestamp), "%s_%ld", g_userid, current_time);
+            __save_image("/data/user/access/picture", userid_with_timestamp, &face_info.recognition);
+        }
+        g_recognition_success = -1;
+    }
+    return 0;
+}
+
+void __save_image(char *dir, char *userid, struct vbar_drv_face_recongition_info *recognition)
+{
+    // 检查参数有效性
+    if (!dir || !userid || !recognition) {
+        printf("错误：参数无效，无法保存图像\n");
+        return;
     }
 
-    return 0;
+    // 递归创建指定目录
+    char mkdir_cmd[512];
+    snprintf(mkdir_cmd, sizeof(mkdir_cmd), "mkdir -p %s", dir);
+    system(mkdir_cmd);
+
+    // 生成主图片文件路径
+    char picture_path[512];
+    snprintf(picture_path, sizeof(picture_path), "%s/%s.jpeg", dir, userid);
+
+    // 如果文件存在则先删除
+    if (access(picture_path, F_OK) == 0) {
+        remove(picture_path);
+    }
+
+    // 调整图像尺寸并保存主图片
+    struct vbar_drv_image *resized_image = vbar_drv_image_resize_resolution(recognition->rgb_image, 480, 854, FILTER_MODE_BOX);
+    vbar_drv_image_process_image_to_picture_file(resized_image, IMAGE_YUV420SP, TYPE_JPEG, picture_path, 100);
+    vbar_drv_capturer_image_destroy(resized_image); // 释放内存
+
+    // 生成缩略图文件路径
+    char thumb_path[512];
+    snprintf(thumb_path, sizeof(thumb_path), "%s/%s_thumb.jpeg", dir, userid);
+
+    // 如果缩略图文件存在则先删除
+    if (access(thumb_path, F_OK) == 0) {
+        remove(thumb_path);
+    }
+
+    struct vbar_drv_image *thumb_image = vbar_drv_image_process_yuv420sp_cut(recognition->rgb_image, recognition->rect_smooth[0], recognition->rect_smooth[1], recognition->rect_smooth[2] - recognition->rect_smooth[0], recognition->rect_smooth[3] - recognition->rect_smooth[1]);
+    vbar_drv_image_process_image_to_picture_file(thumb_image, IMAGE_YUV420SP, TYPE_JPEG, thumb_path, 100);
+    vbar_drv_capturer_image_destroy(thumb_image); // 释放内存
+
+    printf("保存图片成功：%s\n", picture_path);
+    printf("保存缩略图成功：%s\n", thumb_path);
+
+    strncpy(saved_picture_path, picture_path, sizeof(saved_picture_path) - 1);
+    saved_picture_path[sizeof(saved_picture_path) - 1] = '\0';
+    strncpy(saved_picture_thumb_path, thumb_path, sizeof(saved_picture_thumb_path) - 1);
+    saved_picture_thumb_path[sizeof(saved_picture_thumb_path) - 1] = '\0';
 }
 
 int face_set_pause(bool pause)
@@ -263,8 +317,15 @@ void face_register(char *userid)
         return;
     // 设置注册标志和用户ID
     register_flag = 1;
-    strncpy(pending_userid, userid, sizeof(pending_userid) - 1);
-    pending_userid[sizeof(pending_userid) - 1] = '\0';
+    strncpy(register_userid, userid, sizeof(register_userid) - 1);
+    register_userid[sizeof(register_userid) - 1] = '\0';
+}
+
+void face_register_reset(void)
+{
+    register_flag = 0;
+    register_userid[0] = '\0';
+    register_result = -99;
 }
 
 int get_face_register_result(void)
@@ -294,6 +355,19 @@ struct recognition_t get_face_recognition_result(char *userid)
     strncpy(userid, g_userid, sizeof(g_userid) - 1);
     g_last_recognition = g_recognition;
     return g_recognition;
+}
+
+void set_face_recognition_result(int is_success)
+{
+    g_recognition_success = is_success;
+}
+
+void get_saved_picture_path(char *path, char *thumb_path)
+{
+    strncpy(path, saved_picture_path, sizeof(saved_picture_path) - 1);
+    saved_picture_path[0] = '\0';
+    strncpy(thumb_path, saved_picture_thumb_path, sizeof(saved_picture_thumb_path) - 1);
+    saved_picture_thumb_path[0] = '\0';
 }
 
 void face_update_config(struct face_config_t *options)

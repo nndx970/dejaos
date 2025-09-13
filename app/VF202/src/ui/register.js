@@ -59,16 +59,22 @@ export function confirmRegister() {
         tipText.setText("请将面部对准屏幕 " + count + " 秒后注册人脸");
         if (count <= 0) {
             count = 3
+            tipText.setText("请将面部对准屏幕 " + count + " 秒后注册人脸");
             hide(tipText);
             hide(tipIcon);
             hide(bar);
+            clearInterval(countInterval);
 
             face.faceRegister(userName).then((ret) => {
-                // 注册成功后，创建用户和凭证
-                const userId = access.db.createUser(userName);
-                console.log("用户创建成功，ID:", userId);
-                const credentialId = access.db.createCredential(userId, 300, "");
-                console.log("人脸凭证创建成功，ID:", credentialId);
+                let userId = null;
+                let credentialId = null;
+                if (ret == 0) {
+                    // 注册成功后，创建用户和凭证
+                    userId = access.db.createUser(userName);
+                    console.log("用户创建成功，ID:", userId);
+                    credentialId = access.db.createCredential(userId, 300, "");
+                    console.log("人脸凭证创建成功，ID:", credentialId);
+                }
                 if (!userId || !credentialId) {
                     ret = -99;
                 }
@@ -80,7 +86,6 @@ export function confirmRegister() {
                 setTimeout(() => {
                     setRegisterNow(false);
                 }, 2000);
-                clearInterval(countInterval);
             });
         }
     }, 1000);

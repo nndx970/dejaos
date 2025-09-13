@@ -9,7 +9,7 @@ import {
     getPowerMode,
     setPowerMode
 } from './lib/display/index.js';
-import { faceInit, faceUpdateConfig, getFaceRecognitionResult, getFaceTrackData, setFacePause, faceRegister, faceDeinit } from './lib/face/index.js';
+import { faceInit, faceUpdateConfig, getFaceRecognitionResult, getFaceTrackData, setFacePause, faceRegister, faceDeinit, faceGetSavedPicturePath } from './lib/face/index.js';
 import { mqttInit, mqttDeinit, setConnectedCallback, setStatusCallback, setMessageCallback, subscribe, publish } from './lib/mqtt/index.js';
 import { pwmRequest, pwmSetPeriodByChannel, pwmEnable, pwmSetDutyByChannel, pwmFree, setIrLedBrightness, setWhiteLedBrightness } from './lib/pwm/index.js';
 import { initGpio, deinitGpio, requestGpio, freeGpio, setFuncGpio, setPullStateGpio, getPullStateGpio, setValueGpio, getValueGpio, setDriveStrengthGpio, getDriveStrengthGpio, setRelayStatus } from './lib/gpio/index.js';
@@ -30,7 +30,8 @@ export const face = {
     getFaceTrackData,
     setFacePause,
     faceRegister,
-    faceDeinit
+    faceDeinit,
+    faceGetSavedPicturePath
 };
 
 // MQTT模块
