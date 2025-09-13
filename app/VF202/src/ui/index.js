@@ -4,8 +4,6 @@ import { initResult } from "./result.js";
 import { initPasswordPass } from "./password.js";
 import { initRegister } from "./register.js";
 
-
-
 export function uiInit() {
     // 初始化跟踪框
     trackInit();

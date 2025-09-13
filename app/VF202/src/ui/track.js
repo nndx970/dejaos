@@ -37,10 +37,8 @@ export function setRegisterNow(now) {
 export function setPasswordNow(now) {
     passwordNow = now;
 }
-
+let configManager = await config.initConfigManager();
 setInterval(async () => {
-    let configManager = await config.initConfigManager();
-
     let trackData = getFaceTrackData();
     if (trackData) {
         // console.log(trackData);

@@ -34,11 +34,17 @@ function audioSetVolume(volume) {
     return audioSetVolume1.call(volume);
 }
 function audioGetVolumeRange() {
-    const max = new Buffer(4);
-    const min = new Buffer(4);
+    const max = new Uint8Array(4);
+    const min = new Uint8Array(4);
     audioGetVolumeRange1.call(max, min);
-    console.log('max:', FFI.bufferToNumber(max));
-    console.log('min:', FFI.bufferToNumber(min));
+    const minDataView = new DataView(min.buffer);
+    const maxDataView = new DataView(max.buffer);
+    const value = minDataView.getUint32(0, true);
+    const value2 = maxDataView.getUint32(0, true);
+    return {
+        max: value2,
+        min: value
+    };
 }
 
 export { audioInit, audioDeinit, audioPlay, audioPlayingInterrupt, audioGetVolume, audioSetVolume, audioGetVolumeRange };

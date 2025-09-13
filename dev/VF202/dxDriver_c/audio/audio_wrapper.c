@@ -67,10 +67,16 @@ int audio_get_volume()
 
 void audio_set_volume(int volume)
 {
-    vbar_m_audio_set_volume(audio_handle, volume);
+   vbar_m_audio_set_volume(audio_handle, volume);
 }
 
 int audio_get_volume_range(int *max, int *min)
 {
-    return vbar_m_audio_get_volume_range(audio_handle, &max, &min);
+    uint32_t max_val, min_val;
+    int result = vbar_m_audio_get_volume_range(audio_handle, &max_val, &min_val);
+    if (result == 0) {
+        *max = (int)max_val;
+        *min = (int)min_val;
+    }
+    return result;
 }

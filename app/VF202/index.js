@@ -4,13 +4,7 @@ import { config, mqttAccess } from "dxAccess";
 import configJson from './config.json';
 import { uiInit } from './src/ui/index.js';
 
-// 内存检测
-setInterval(() => {
-    tjs.spawn(['free', '-m'])
-}, 1000);
-
 async function main() {
-    // 初始化配置管理器
     const configManager = await config.initConfigManager();
     // 初始化摄像头
     const { rgbCapturer, nirCapturer } = capturer.capturerInit();
@@ -26,6 +20,11 @@ async function main() {
     uiInit();
     // 初始化显示
     displayInit();
+
+    // 内存检测
+    setInterval(() => {
+        tjs.spawn(['free', '-m'])
+    }, 1000);
 }
 
 main().catch(console.error);
@@ -65,5 +64,4 @@ function audioInit1() {
     audio.audioInit(100);
     let resourcePath = path.join(import.meta.dirname, '/resource');
     audio.audioPlay(resourcePath + '/audio/welcome.wav');
-    audio.audioGetVolumeRange();
 }

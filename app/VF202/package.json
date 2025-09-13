@@ -9,8 +9,8 @@
   },
   "author": "dxl",
   "dependencies": {
-    "dxDriver": "file:../dxDriver",
-    "dxAccess": "file:../dxAccess",
-    "dxLib": "file:../dxLib"
+    "dxDriver": "file:../../dxDriver",
+    "dxAccess": "file:../../dxAccess",
+    "dxLib": "file:../../dxLib"
   }
 }
