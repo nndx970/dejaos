@@ -1,0 +1,19 @@
+{
+  "name": "app_test",
+  "version": "0.0.1",
+  "description": "应用测试",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "build": "npx esbuild index.jsx --bundle --platform=neutral --external:tjs:path --external:tjs:sqlite --external:tjs:ffi --define:process.env.NODE_ENV='\"development\"' --outfile=dist/index.js && cp -r resource dist/resource"
+  },
+  "author": "dxl",
+  "dependencies": {
+    "dxAccess": "file:../dxAccess",
+    "dxDriver": "file:../dxDriver",
+    "dxLib": "file:../dxLib",
+    "lvgljs-ui": "file:../lvgljs-ui",
+    "react": "^16.13.1",
+    "react-reconciler": "^0.25.1"
+  }
+}
